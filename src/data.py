@@ -39,6 +39,10 @@ def load_dataset(name, ds_cfg=None, glob_cfg=None):
     # Drop rows with missing target
     keep = y.notna().to_numpy()
     X, y = X.loc[keep].reset_index(drop=True), y.loc[keep].reset_index(drop=True)
+    max_target = cfg.get("max_target")
+    if max_target is not None:
+        keep = (pd.to_numeric(y) <= max_target).to_numpy()
+        X, y = X.loc[keep].reset_index(drop=True), y.loc[keep].reset_index(drop=True)
 
     # Dtypes: categoricals become string categories (NaN preserved); the rest numeric
     for c in X.columns:

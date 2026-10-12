@@ -34,7 +34,8 @@ def metrics(pred, y_raw, task):
         return {"auc": float(roc_auc_score(y_raw, pred)),
                 "accuracy": float(accuracy_score(y_raw, pred >= 0.5))}
     p = decode_pred(np.clip(pred, -20, 30), task)
-    return {"rmse": float(np.sqrt(np.mean((p - y_raw) ** 2)))}
+    return {"rmse": float(np.sqrt(np.mean((p - y_raw) ** 2))),
+            "rmse_log": float(np.sqrt(np.mean((np.clip(pred, -20, 30) - np.log1p(y_raw)) ** 2)))}
 
 
 def select_value(m, task):

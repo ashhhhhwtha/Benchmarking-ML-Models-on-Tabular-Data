@@ -68,6 +68,7 @@ def run_job(dataset, model, fraction, seed, out_dir, n_trials=None, force=False)
         "val_metrics": best["metrics"],
         "test_roc_auc": test.get("auc"), "test_accuracy": test.get("accuracy"),
         "test_rmse": test.get("rmse"),
+        "test_rmse_log": test.get("rmse_log"),
         "best_params": best["params"],
         "tune_time_s": round(tune_time, 2),
         "fit_time_s": round(best["fit_time_s"], 2),

@@ -3,5 +3,5 @@ datasets:
   electricity:   {openml_id: 151,   task: classification, target: null, max_rows: null}
   kick:          {openml_id: 41162, task: classification, target: null, max_rows: 40000, drop_columns: [BYRNO, VNZIP1]}
   california:    {openml_id: 537,   task: regression,     target: null, max_rows: null}
-  brazil_houses: {openml_id: 42688, task: regression,     target: null, max_rows: null, drop_columns: ["hoa_(BRL)", "rent_amount_(BRL)", "property_tax_(BRL)", "fire_insurance_(BRL)"]}
+  brazil_houses: {openml_id: 42688, task: regression,     target: null, max_rows: null, max_target: 50000, drop_columns: ["hoa_(BRL)", "rent_amount_(BRL)", "property_tax_(BRL)", "fire_insurance_(BRL)"]}
   allstate:      {openml_id: 42571, task: regression,     target: null, max_rows: 10000}
