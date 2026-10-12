@@ -1,0 +1,12 @@
+seeds: [0, 1, 2]
+split_seed: 12345
+split_ratios: {train: 0.6, val: 0.2, test: 0.2}
+fractions: [0.1, 0.25, 0.5, 1.0]
+n_trials: 30
+neural:
+  max_epochs: 200
+  early_stopping_patience: 20
+  trial_time_cap_s: 600
+paths:
+  splits: splits
+  raw_results: results/raw
