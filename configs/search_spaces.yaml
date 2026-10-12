@@ -24,11 +24,11 @@ mlp:
   weight_decay: {type: loguniform, low: 1.0e-6, high: 1.0e-2}
   batch_size: {type: choice, values: [128, 256, 512]}
 fttransformer:
-  n_blocks: {type: int, low: 1, high: 4}
-  d_block: {type: choice, values: [32, 64, 96, 128]}
+  n_blocks: {type: int, low: 1, high: 2}
+  d_block: {type: choice, values: [32, 64]}
   attention_dropout: {type: uniform, low: 0.0, high: 0.5}
   ffn_dropout: {type: uniform, low: 0.0, high: 0.5}
   residual_dropout: {type: uniform, low: 0.0, high: 0.2}
-  lr: {type: loguniform, low: 1.0e-5, high: 3.0e-3}
+  lr: {type: loguniform, low: 1.0e-4, high: 3.0e-3}
   weight_decay: {type: loguniform, low: 1.0e-6, high: 1.0e-3}
   batch_size: {type: choice, values: [256, 512]}
