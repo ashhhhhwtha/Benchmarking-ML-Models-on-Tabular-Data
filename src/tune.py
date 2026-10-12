@@ -3,6 +3,10 @@ import numpy as np
 from sklearn.metrics import accuracy_score, roc_auc_score
 from src.preprocess import decode_pred
 
+# Bounds on the log1p scale for regression predictions. Applied to every model.
+# exp(16) is about 8.9M, above any target in these datasets.
+LOG_LO, LOG_HI = 0.0, 16.0
+
 
 def get_space(spaces, model, task):
     s = spaces[model]
@@ -26,16 +30,18 @@ def sample_params(space, rng):
     return out
 
 
-def metrics(pred, y_raw, task):
+def metrics(pred, y_raw, task, bounds=None):
     pred = np.asarray(pred, dtype=float)
     if not np.isfinite(pred).all():
         raise ValueError("non-finite predictions")
     if task == "classification":
         return {"auc": float(roc_auc_score(y_raw, pred)),
                 "accuracy": float(accuracy_score(y_raw, pred >= 0.5))}
-    p = decode_pred(np.clip(pred, -20, 30), task)
+    lo, hi = bounds if bounds is not None else (LOG_LO, LOG_HI)
+    p_log = np.clip(pred, lo, hi)
+    p = decode_pred(p_log, task)
     return {"rmse": float(np.sqrt(np.mean((p - y_raw) ** 2))),
-            "rmse_log": float(np.sqrt(np.mean((np.clip(pred, -20, 30) - np.log1p(y_raw)) ** 2)))}
+            "rmse_log": float(np.sqrt(np.mean((p_log - np.log1p(y_raw)) ** 2)))}
 
 
 def select_value(m, task):
@@ -43,7 +49,7 @@ def select_value(m, task):
     return m["auc"] if task == "classification" else -m["rmse"]
 
 
-def random_search(task, space, seed, n_trials, make_fn, Xtr, ytr, Xva, yva, yva_raw):
+def random_search(task, space, seed, n_trials, make_fn, Xtr, ytr, Xva, yva, yva_raw, bounds=None):
     rng = np.random.RandomState(seed)
     best, log = None, []
     t_start = time.time()
@@ -54,7 +60,7 @@ def random_search(task, space, seed, n_trials, make_fn, Xtr, ytr, Xva, yva, yva_
         try:
             m = make_fn(params).fit(Xtr, ytr, Xva, yva)
             fit_t = time.time() - t0
-            met = metrics(m.predict(Xva), yva_raw, task)
+            met = metrics(m.predict(Xva), yva_raw, task, bounds)
             val = select_value(met, task)
         except Exception as e:
             m, err = None, repr(e)[:200]

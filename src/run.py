@@ -47,6 +47,7 @@ def run_job(dataset, model, fraction, seed, out_dir, n_trials=None, force=False)
     prep = build_prep(kind, X.iloc[tr], seed=seed)  # fitted on the training subset only
     Xtr, Xva, Xte = (prep.transform(X.iloc[i]) for i in (tr, va, te))
     ytr = encode_target(y_raw[tr], task)
+    bounds = (float(ytr.min()), float(ytr.max())) if task == "regression" else None
     yva = encode_target(y_raw[va], task)
     meta = ({"n_num": len(prep.num), "cardinalities": prep.cardinalities}
             if kind == "neural" else {})
@@ -56,9 +57,9 @@ def run_job(dataset, model, fraction, seed, out_dir, n_trials=None, force=False)
     best, log, tune_time = random_search(
         task, space, seed, n_trials,
         lambda p: make_model(model, p, task, seed, meta, glob),
-        Xtr, ytr, Xva, yva, y_raw[va])
+        Xtr, ytr, Xva, yva, y_raw[va], bounds)
 
-    test = metrics(best["model"].predict(Xte), y_raw[te], task)  # test set used once, here
+    test = metrics(best["model"].predict(Xte), y_raw[te], task, bounds)  # test set used once, here
     res = {
         "dataset": dataset, "model": model, "fraction": fraction, "seed": seed,
         "task": task, "n_train": int(len(tr)), "n_trials": n_trials,
