@@ -1,0 +1,12 @@
+numpy
+pandas
+pyarrow
+scikit-learn
+scipy
+pyyaml
+xgboost
+rtdl-revisiting-models
+matplotlib
+joblib
+tqdm
+pytest
