@@ -132,7 +132,7 @@ def plot_time_vs_score(summary, df, tasks):
         ax.scatter(s["time"], s["relative_score"], label=m, color=COLORS[m])
     ax.set_xscale("log")
     ax.set_xlabel("Median seconds per trial (100% data)")
-    ax.set_ylabel("Score relative to best model on dataset (1.0 = best)")
+    ax.set_ylabel("Relative Score (1.0 = Best)" )
     ax.legend(fontsize=8)
     fig.tight_layout()
     fig.savefig(FIG / "time_vs_score.png", dpi=150)
