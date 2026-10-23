@@ -1,0 +1,9 @@
+| model | amazon | electricity | kick | california | brazil_houses | allstate |
+|---|---|---|---|---|---|---|
+| linear | 0.8192 ± 0.0003 | 0.8344 ± 0.0000 | 0.7572 ± 0.0002 | 71,169 ± 0 | 3,241 ± 0 | 2,108 ± 2 |
+| rf | 0.8171 ± 0.0032 | 0.9696 ± 0.0040 | 0.7509 ± 0.0019 | 53,459 ± 491 | 2,475 ± 3 † | 2,140 ± 6 |
+| xgb | 0.8188 ± 0.0064 | **0.9791 ± 0.0005** | **0.7659 ± 0.0014** | **49,007 ± 128** | 2,478 ± 35 † | 2,008 ± 11 † |
+| mlp | 0.8200 ± 0.0133 † | 0.9311 ± 0.0036 | 0.7523 ± 0.0036 | 52,689 ± 151 | 2,576 ± 24 | 2,032 ± 47 † |
+| fttransformer | 0.8268 ± 0.0037 † | 0.9149 ± 0.0021 | 0.7526 ± 0.0020 | 52,261 ± 628 | 2,491 ± 18 | 2,026 ± 2 |
+
+Classification: ROC-AUC (higher is better). Regression: RMSE (lower is better). Mean ± std over 3 seeds. Bold = clear winner (gap larger than pooled std). † = tied within pooled std.

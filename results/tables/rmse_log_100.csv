@@ -1,0 +1,6 @@
+model,california,brazil_houses,allstate
+fttransformer,0.2372,0.3671,0.5895
+linear,0.3388,0.4291,0.5901
+mlp,0.2387,0.3717,0.6003
+rf,0.235,0.3609,0.6121
+xgb,0.2217,0.3583,0.5824
